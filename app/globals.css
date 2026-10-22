@@ -1,0 +1,71 @@
+@tailwind base; @tailwind components; @tailwind utilities;
+:root { --ink: 18 48 61; --mist: 244 247 249; }
+body { @apply bg-mist text-ink antialiased; }
+.btn { @apply inline-flex items-center rounded-md bg-brand px-4 py-2 text-sm font-medium text-white hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sun; }
+.btn-ghost { @apply inline-flex items-center rounded-md border border-ink/20 bg-white px-4 py-2 text-sm font-medium hover:bg-mist; }
+.input { @apply w-full rounded-md border border-ink/20 bg-white px-3 py-2 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-brand; }
+.card { @apply rounded-xl border border-ink/10 bg-white p-5 shadow-sm; }
+
+/* ===== ธีม .dk: กลางคืน (night) / กลางวัน (day) สลับด้วย data-ui-theme บน <html> ===== */
+.dk { min-height: 100vh; color: rgb(var(--ink)); position: relative; }
+html[data-ui-theme='night'] .dk { --ink: 226 232 255; --mist: 11 18 38; }
+html[data-ui-theme='day'] .dk { --ink: 18 48 61; --mist: 232 242 255; }
+
+/* พื้นหลังอนิเมชัน (canvas) วางหลังเนื้อหาทั้งหมด */
+.stage-base { position: fixed; inset: 0; z-index: -2; pointer-events: none; background: #0B1226; }
+html[data-ui-theme='day'] .stage-base { background: #DCEBFF; }
+.stage { position: fixed; inset: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; opacity: .62; } /* ลดความเข้มอนิเมชันพื้นหลัง */
+
+/* ===== เมนูแถบข้าง: ปุ่มมีกรอบ ===== */
+.navbtn { display: flex; align-items: center; gap: .6rem; width: 100%; padding: .55rem .8rem; border-radius: .75rem; font-size: .875rem; font-weight: 500;
+  border: 1px solid rgb(255 255 255 / .14); background: rgb(255 255 255 / .05); color: rgb(var(--ink)); backdrop-filter: blur(6px);
+  transition: transform .2s, background .25s, border-color .25s, box-shadow .25s; }
+.navbtn .ico { display: grid; place-items: center; width: 1.65rem; height: 1.65rem; border-radius: .5rem; font-size: .85rem; background: rgb(255 255 255 / .08); }
+.navbtn:hover { transform: translateX(3px); border-color: rgb(124 162 255 / .7); background: rgb(76 125 255 / .16); box-shadow: 0 6px 18px -8px rgb(76 125 255 / .7); }
+.navbtn:focus-visible { outline: 2px solid #7CA2FF; outline-offset: 2px; }
+.navbtn[aria-current='page'] { color: #fff; border-color: transparent; background: linear-gradient(135deg, #2F5BFF, #22B8A0); box-shadow: 0 8px 22px -8px rgb(47 91 255 / .85); }
+.navbtn[aria-current='page'] .ico { background: rgb(255 255 255 / .22); }
+html[data-ui-theme='day'] .navbtn { border-color: rgb(18 48 61 / .14); background: rgb(255 255 255 / .7); }
+html[data-ui-theme='day'] .navbtn .ico { background: rgb(47 91 255 / .1); }
+html[data-ui-theme='day'] .navbtn:hover { background: #fff; border-color: #2F5BFF; box-shadow: 0 8px 20px -10px rgb(47 91 255 / .6); }
+html[data-ui-theme='day'] .navbtn[aria-current='page'] { border-color: transparent; background: linear-gradient(135deg, #2F5BFF, #22B8A0); }
+
+.dk header, .dk footer { backdrop-filter: blur(10px); }
+.dk .card { box-shadow: none; backdrop-filter: blur(6px); }
+.dk .card, .dk .bg-white, .dk .input, .dk .btn-ghost, .dk header, .dk footer { transition: background-color .5s, border-color .5s; }
+.dk .btn { background: #2F5BFF; }
+
+/* กลางคืน */
+html[data-ui-theme='night'] .dk .bg-white { background-color: rgb(255 255 255 / .05); }
+html[data-ui-theme='night'] .dk .card { border-color: rgb(255 255 255 / .1); }
+html[data-ui-theme='night'] .dk .input { background-color: rgb(255 255 255 / .06); border-color: rgb(255 255 255 / .18); color: #fff; }
+html[data-ui-theme='night'] .dk .input::placeholder { color: rgb(226 232 255 / .45); }
+html[data-ui-theme='night'] .dk .btn-ghost { border-color: rgb(255 255 255 / .2); background: rgb(255 255 255 / .05); }
+html[data-ui-theme='night'] .dk .btn-ghost:hover { background: rgb(255 255 255 / .12); }
+html[data-ui-theme='night'] .dk .text-brand { color: #7CA2FF; }
+html[data-ui-theme='night'] .dk .text-red-700 { color: #f87171; }
+html[data-ui-theme='night'] .dk .bg-brand { background-color: #4C7DFF; }
+html[data-ui-theme='night'] .dk .panel { background: #16324a; color: #fff; }
+
+/* กลางวัน */
+html[data-ui-theme='day'] .dk .bg-white { background-color: rgb(255 255 255 / .72); }
+html[data-ui-theme='day'] .dk header.border-b { border-color: rgb(18 48 61 / .08); }
+html[data-ui-theme='day'] .dk .card { border-color: rgb(18 48 61 / .1); box-shadow: 0 10px 30px -14px rgb(47 91 255 / .3); }
+html[data-ui-theme='day'] .dk .input { background-color: rgb(255 255 255 / .85); border-color: rgb(18 48 61 / .2); color: rgb(var(--ink)); }
+html[data-ui-theme='day'] .dk .input::placeholder { color: rgb(18 48 61 / .4); }
+html[data-ui-theme='day'] .dk .btn-ghost { border-color: rgb(18 48 61 / .2); background: rgb(255 255 255 / .7); }
+html[data-ui-theme='day'] .dk .btn-ghost:hover { background: rgb(255 255 255 / .95); }
+html[data-ui-theme='day'] .dk .text-brand { color: #2F5BFF; }
+html[data-ui-theme='day'] .dk .bg-brand { background-color: #2F5BFF; }
+html[data-ui-theme='day'] .dk .panel { background: linear-gradient(135deg, #1D3FBF, #2F5BFF); color: #fff; }
+
+/* ภาษาจีน: ใช้ฟอนต์จีนของระบบ */
+html[lang='zh-CN'] body { font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft YaHei', system-ui, sans-serif; }
+
+@media (prefers-reduced-motion: reduce) { .dk *, .navbtn { transition: none !important; } .navbtn:hover { transform: none; } }
+
+/* ปุ่มออกจากระบบ: โทนแดงอ่อน */
+.navbtn.logout { cursor: pointer; text-align: left; border-color: rgb(248 113 113 / .45); }
+.navbtn.logout:hover { background: rgb(239 68 68 / .18); border-color: #f87171; box-shadow: 0 6px 18px -8px rgb(239 68 68 / .7); }
+html[data-ui-theme='day'] .navbtn.logout { border-color: rgb(220 38 38 / .35); color: #b91c1c; }
+html[data-ui-theme='day'] .navbtn.logout:hover { background: #fff; border-color: #dc2626; }
