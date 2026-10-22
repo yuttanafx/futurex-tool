@@ -20,7 +20,8 @@ const NAV: [Tx, [string, Tx][]][] = [
     ['/app/integrations', tx('ช่องทาง', 'Channels', '渠道')], ['/app/settings', tx('ตั้งค่า', 'Settings', '设置')]]],
 ]
 export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
-  const { tenant, user } = await getContext()
+  const { tenant, user, sb } = await getContext()
+  const { data: isAdmin } = await sb.rpc('is_platform_admin')
   return (
     <div className="dk"><MarketingBackground /><div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 md:flex-row">
       <aside className="md:w-56 md:shrink-0">
@@ -32,6 +33,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
         </div>
         <AppNav groups={NAV} />
         <div className="mt-6 border-t border-ink/10 pt-4">
+          {isAdmin === true && <Link href="/admin" className="navbtn mb-2"><span className="ico" aria-hidden>🛡️</span><span><T th="ผู้ดูแลระบบ (Admin)" en="Platform admin" zh="平台管理" /></span></Link>}
           <p className="truncate px-1 text-xs text-ink/50" title={user.email ?? ''}>{user.email}</p>
           <form action={signOut} className="mt-2">
             <button type="submit" className="navbtn logout"><span className="ico" aria-hidden>🚪</span><span><T th="ออกจากระบบ" en="Log out" zh="退出登录" /></span></button>
