@@ -15,6 +15,7 @@ export default function Login({ searchParams }: { searchParams: { mode?: string;
           {reg && <label className="block text-sm"><T th="ชื่อร้าน" en="Shop name" zh="店铺名称" /><input name="shop" required className="input mt-1" /></label>}
           <label className="block text-sm"><T th="อีเมล" en="Email" zh="邮箱" /><input name="email" type="email" required className="input mt-1" /></label>
           <label className="block text-sm"><T th="รหัสผ่าน" en="Password" zh="密码" /><input name="password" type="password" minLength={8} required className="input mt-1" /></label>
+          {reg && <label className="flex items-start gap-2 text-xs"><input type="checkbox" name="pdpa" required className="mt-0.5" /><span><T th="ฉันได้อ่านและยอมรับ" en="I have read and accept the" zh="我已阅读并接受" /> <Link href="/privacy" target="_blank" className="underline"><T th="นโยบายความเป็นส่วนตัว (PDPA)" en="Privacy Policy (PDPA)" zh="隐私政策（PDPA）" /></Link></span></label>}
           <button className="btn w-full justify-center">{title}</button>
         </form>
         <p className="mt-6 text-sm text-ink/70">

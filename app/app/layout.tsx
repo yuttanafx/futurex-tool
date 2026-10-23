@@ -14,7 +14,8 @@ const NAV: [Tx, [string, Tx][]][] = [
     ['/app/orders', tx('คำสั่งซื้อ', 'Orders', '订单')], ['/app/customers', tx('ลูกค้า', 'Customers', '客户')]]],
   [tx('AI และสื่อสาร', 'AI & Communication', 'AI 与沟通'), [
     ['/app/inbox', tx('กล่องข้อความ', 'Inbox', '收件箱')], ['/app/ai', tx('ผู้ช่วย AI', 'AI assistant', 'AI 助手')],
-    ['/app/live', tx('ไลฟ์', 'Live', '直播')], ['/app/content', tx('คอนเทนต์', 'Content', '内容')]]],
+    ['/app/live', tx('ไลฟ์', 'Live', '直播')], ['/app/content', tx('คอนเทนต์', 'Content', '内容')],
+    ['/app/adcontent', tx('ยิงแอด คอนเทนต์', 'Ad Content', '广告内容')]]],
   [tx('เครื่องมือ', 'Tools', '工具'), [
     ['/app/nfc', tx('NFC', 'NFC', 'NFC')], ['/app/referrals', tx('ลิงก์แนะนำ', 'Referrals', '推荐链接')],
     ['/app/integrations', tx('ช่องทาง', 'Channels', '渠道')], ['/app/settings', tx('ตั้งค่า', 'Settings', '设置')]]],

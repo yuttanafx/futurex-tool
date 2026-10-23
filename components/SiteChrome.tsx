@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Controls, T } from '@/components/Prefs'
+import { ConsentSettingsButton } from '@/components/PdpaConsent'
 export function SiteHeader() {
   return (
     <header className="border-b border-white/10 bg-white">
@@ -24,6 +25,10 @@ export function SiteFooter() {
         th="หนึ่งแพลตฟอร์ม หลายร้านค้า ข้อมูลแต่ละร้านแยกกันอย่างปลอดภัย"
         en="One platform, many shops. Each shop's data stays securely separated."
         zh="一个平台，多家店铺，各店数据安全隔离" />
+      <div className="mt-3 flex justify-center gap-4">
+        <Link href="/privacy" className="underline"><T th="นโยบายความเป็นส่วนตัว" en="Privacy Policy" zh="隐私政策" /></Link>
+        <ConsentSettingsButton className="underline" />
+      </div>
     </footer>
   )
 }

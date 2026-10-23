@@ -71,7 +71,8 @@ export default function CheckoutForm({ tenant, slug, cfg, error }: { tenant: str
           {cfg.freeOver != null && ship > 0 && <p className="text-xs text-brand">ซื้อเพิ่มอีก {baht(cfg.freeOver - subtotal)} ส่งฟรี</p>}
           <div className="flex justify-between border-t border-ink/10 pt-2 text-lg font-bold"><dt>ยอดรวม</dt><dd className="text-brand">{baht(subtotal + ship)}</dd></div>
         </dl>
-        <button className="btn mt-5 w-full justify-center py-3 text-base">ยืนยันคำสั่งซื้อ</button>
+        <label className="mt-5 flex items-start gap-2 text-xs"><input type="checkbox" required className="mt-0.5" /><span>ฉันยินยอมให้ร้านและแพลตฟอร์มเก็บ ใช้ ชื่อ เบอร์โทร และที่อยู่ เพื่อจัดการคำสั่งซื้อและจัดส่ง ตาม <Link href="/privacy" target="_blank" className="underline">นโยบายความเป็นส่วนตัว (PDPA)</Link></span></label>
+        <button className="btn mt-3 w-full justify-center py-3 text-base">ยืนยันคำสั่งซื้อ</button>
         <p className="mt-2 text-center text-xs text-ink/50">ราคาและค่าส่งจะถูกตรวจสอบอีกครั้งโดยระบบก่อนยืนยัน</p>
       </aside>
     </form>
