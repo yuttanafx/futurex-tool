@@ -1,42 +1,35 @@
 'use client'
-import { useState } from 'react'
 import { T } from '@/components/Prefs'
 const HEYGEN_URL = 'https://app.heygen.com/home'
+// HeyGen ไม่อนุญาตให้ฝังเป็น iframe (refused to connect) จึงเปิดเป็นหน้าต่างแยกที่จอดอยู่ครึ่งขวาของจอ ใช้ข้างหน้าไลฟ์นี้ได้
+function openSide() {
+  const s = window.screen as Screen & { availLeft?: number; availTop?: number }
+  const left = (s.availLeft ?? 0) + Math.floor(s.availWidth / 2)
+  const top = s.availTop ?? 0
+  const w = Math.floor(s.availWidth / 2)
+  const h = s.availHeight
+  window.open(HEYGEN_URL, 'heygen', `popup=yes,left=${left},top=${top},width=${w},height=${h},noopener`)
+}
 export default function HeyGenPanel() {
-  const [key, setKey] = useState(0)
-  const [loaded, setLoaded] = useState(false)
-  function popup() {
-    const w = Math.min(1280, window.screen.availWidth - 80)
-    const h = Math.min(860, window.screen.availHeight - 80)
-    window.open(HEYGEN_URL, 'heygen', `popup=yes,width=${w},height=${h},noopener`)
-  }
   return (
-    <section aria-label="HeyGen" className="card flex flex-col xl:sticky xl:top-6">
-      <div className="flex flex-wrap items-center justify-between gap-2">
-        <h2 className="text-lg font-bold">HeyGen</h2>
-        <div className="flex flex-wrap gap-2">
-          <button type="button" onClick={() => { setLoaded(false); setKey((k) => k + 1) }} className="btn-ghost"><T th="โหลดใหม่" en="Reload" zh="重新加载" /></button>
-          <button type="button" onClick={popup} className="btn-ghost"><T th="หน้าต่างแยก" en="Pop-out" zh="独立窗口" /></button>
-          <a href={HEYGEN_URL} target="_blank" rel="noopener noreferrer" className="btn"><T th="เปิดแท็บใหม่" en="New tab" zh="新标签页" /></a>
-        </div>
-      </div>
-      <div className="relative mt-3 h-[70vh] min-h-[420px] overflow-hidden rounded-md border border-ink/10 bg-white xl:h-[calc(100vh-11rem)]">
-        {!loaded && <p className="absolute inset-0 grid place-items-center text-sm text-ink/60">กำลังโหลด HeyGen…</p>}
-        <iframe
-          key={key}
-          src={HEYGEN_URL}
-          title="HeyGen"
-          onLoad={() => setLoaded(true)}
-          allow="camera; microphone; clipboard-read; clipboard-write; fullscreen; autoplay; display-capture"
-          referrerPolicy="strict-origin-when-cross-origin"
-          className="absolute inset-0 h-full w-full border-0"
-        />
-      </div>
-      <p className="mt-3 text-xs text-ink/60">
+    <section aria-label="HeyGen" className="card flex flex-col items-start gap-4 xl:sticky xl:top-6">
+      <h2 className="text-lg font-bold">HeyGen</h2>
+      <p className="text-sm text-ink/70">
         <T
-          th="ถ้ากรอบขึ้นว่างหรือปฏิเสธการเชื่อมต่อ แปลว่า HeyGen ไม่อนุญาตให้ฝังในเว็บอื่น ให้ใช้ปุ่ม “หน้าต่างแยก” หรือ “เปิดแท็บใหม่” แทน"
-          en="If the frame is blank or refused, HeyGen does not allow embedding. Use “Pop-out” or “New tab” instead."
-          zh="如果框架空白或被拒绝，说明 HeyGen 不允许嵌入，请改用“独立窗口”或“新标签页”。"
+          th="HeyGen ไม่อนุญาตให้ฝังในเว็บอื่น จึงเปิดเป็นหน้าต่างแยกแทน กดปุ่มด้านล่างแล้วหน้าต่าง HeyGen จะมาอยู่ครึ่งขวาของจอ ส่วนหน้าไลฟ์นี้อยู่ครึ่งซ้าย (ล็อกอิน HeyGen ครั้งเดียวก็ใช้ต่อได้)"
+          en="HeyGen does not allow embedding, so it opens in a separate window. The button below docks it to the right half of your screen, next to this Live page."
+          zh="HeyGen 不允许嵌入其他网站，因此改为独立窗口打开。点击下方按钮，窗口会停靠在屏幕右半边，与本直播页并排使用。"
+        />
+      </p>
+      <div className="flex flex-wrap gap-2">
+        <button type="button" onClick={openSide} className="btn"><T th="เปิด HeyGen ข้างจอ" en="Open HeyGen side-by-side" zh="并排打开 HeyGen" /></button>
+        <a href={HEYGEN_URL} target="_blank" rel="noopener noreferrer" className="btn-ghost"><T th="เปิดแท็บใหม่" en="New tab" zh="新标签页" /></a>
+      </div>
+      <p className="text-xs text-ink/60">
+        <T
+          th="ถ้าไม่มีอะไรเปิดขึ้น ให้อนุญาตป๊อปอัปของเว็บนี้ในเบราว์เซอร์ หรือกด “เปิดแท็บใหม่”"
+          en="If nothing opens, allow pop-ups for this site, or use “New tab”."
+          zh="如果没有打开，请允许本站弹出窗口，或使用“新标签页”。"
         />
       </p>
     </section>
