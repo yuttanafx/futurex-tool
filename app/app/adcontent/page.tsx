@@ -1,6 +1,6 @@
 import { T } from '@/components/Prefs'
 
-const SRC = 'https://ai-adpilot-seven.vercel.app/login#queue'
+const SRC = (process.env.NEXT_PUBLIC_ADPILOT_URL || 'https://ai-adpilot-seven.vercel.app') + '/login#queue'
 
 export default function AdContent() {
   return (
@@ -13,6 +13,13 @@ export default function AdContent() {
           <T th="เปิดในแท็บใหม่ ↗" en="Open in new tab ↗" zh="在新标签页打开 ↗" />
         </a>
       </div>
+      <p className="mt-2 text-xs text-ink/60">
+        <T
+          th="ล็อกอินด้วยบัญชี AdPilot ในกรอบนี้ได้เลย ถ้าเข้าไม่ได้ (เช่น Safari / iPhone) ให้กด “เปิดในแท็บใหม่”"
+          en="Log in with your AdPilot account right here. If it won't sign in (e.g. Safari / iPhone), use “Open in new tab”."
+          zh="可直接在此框内使用 AdPilot 账号登录。若无法登录（如 Safari / iPhone），请点“在新标签页打开”。"
+        />
+      </p>
       <iframe
         src={SRC}
         title="AdPilot"
