@@ -69,3 +69,6 @@ html[lang='zh-CN'] body { font-family: 'PingFang SC', 'Noto Sans SC', 'Microsoft
 .navbtn.logout:hover { background: rgb(239 68 68 / .18); border-color: #f87171; box-shadow: 0 6px 18px -8px rgb(239 68 68 / .7); }
 html[data-ui-theme='day'] .navbtn.logout { border-color: rgb(220 38 38 / .35); color: #b91c1c; }
 html[data-ui-theme='day'] .navbtn.logout:hover { background: #fff; border-color: #dc2626; }
+
+/* หน้าไลฟ์: ขยายความกว้างให้มีที่ว่างฝั่งขวาสำหรับกรอบ HeyGen (เฉพาะหน้าที่มี .live-wide) */
+@media (min-width: 1280px) { .dk > div:has(.live-wide) { max-width: 1600px; } }
