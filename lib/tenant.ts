@@ -19,6 +19,8 @@ export async function getContext() {
     if (error && /function|schema cache/i.test(error.message)) {
       ;({ error } = await sb.rpc('create_tenant', { p_name: name, p_slug: slug }))
     }
+    // หน้า layout กับ page เรียก getContext พร้อมกันตอนเข้าครั้งแรก ฝั่งที่มาช้าจะเจอ 'already has tenant' → ถือว่าร้านถูกสร้างแล้ว ให้อ่านซ้ำแทนการเด้งออก
+    if (error && /already has tenant/i.test(error.message)) error = null
     if (error) {
       console.error('create_tenant failed:', error.message)
       redirect('/login?error=' + encodeURIComponent('สร้างร้านไม่สำเร็จ: ' + error.message))
