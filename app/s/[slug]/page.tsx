@@ -7,7 +7,7 @@ import ProductGrid, { type GP } from "./ProductGrid"
 export const dynamic = "force-dynamic"
 async function load(raw: string) {
   const sb = createClient()
-  const { data: t } = await sb.from("tenants").select("id,name,tagline,banner_url,shipping_fee,free_shipping_over,promptpay_id,bank_account,cod_enabled").eq("slug", decodeURIComponent(raw)).maybeSingle()
+  const { data: t } = await sb.from("tenants").select("id,name,tagline,about,banner_url,shipping_fee,free_shipping_over,promptpay_id,bank_account,cod_enabled").eq("slug", decodeURIComponent(raw)).maybeSingle()
   if (!t) return null
   const [{ data: pages }, { data: products }] = await Promise.all([
     sb.from("sales_pages").select("id,title,seo_title,seo_description").eq("tenant_id", t.id).eq("status", "published"),
@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   const d = await load(params.slug)
   const description = d?.pages[0]?.seo_description ?? d?.t.tagline ?? undefined
   const title = d ? d.pages[0]?.seo_title || d.t.name : "ไม่พบร้านค้า"
-  return { title, description, openGraph: { title, description, images: d?.t.banner_url ? [d.t.banner_url] : undefined } }
+  return { title, description, openGraph: { title, description, images: d?.t.banner_url ? [d.t.banner_url.startsWith("/") ? (process.env.NEXT_PUBLIC_SITE_URL ?? "").replace(/\/$/, "") + d.t.banner_url : d.t.banner_url] : undefined } }
 }
 export default async function Shop({ params }: { params: { slug: string } }) {
   const d = await load(params.slug)
@@ -38,10 +38,25 @@ export default async function Shop({ params }: { params: { slug: string } }) {
     ["🔒", "สั่งซื้อปลอดภัย", "ไม่ต้องสมัครสมาชิก ติดตามออเดอร์ได้ทันที"],
     ["💬", "ถามก่อนซื้อได้", "แชตกับผู้ช่วยของร้านตลอดเวลา"],
   ]
+  const defaultBanner = d.t.banner_url === "/starter/banner.jpg" // แบนเนอร์เริ่มต้นมีโลโก้/ภาพในตัว → แสดงภาพเต็มแล้ววางข้อความไว้ด้านล่าง
   const ld = { "@context": "https://schema.org", "@type": "Store", name: d.t.name, description: intro ?? undefined, image: d.t.banner_url ?? undefined }
   return (
     <main>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld).replace(/</g, "\\u003c") }} />
+      {defaultBanner ? (
+        <section className="bg-[#f6f8fb]">
+          <img src={d.t.banner_url!} alt={d.t.name} className="block max-h-[560px] w-full object-cover object-center" />
+          <div className="mx-auto max-w-6xl px-6 pb-10 pt-6 text-center">
+            <h1 className="text-3xl font-bold leading-tight text-ink md:text-4xl">{d.t.name}</h1>
+            {intro && <p className="mx-auto mt-3 max-w-xl text-lg text-ink/70">{intro}</p>}
+            <div className="mt-6 flex flex-wrap justify-center gap-3">
+              <a href="#products" className="inline-flex items-center rounded-md bg-brand px-6 py-3 font-medium text-white shadow hover:opacity-90">เลือกซื้อสินค้า</a>
+              <Link href={`${base}/contact`} className="inline-flex items-center rounded-md border border-brand px-6 py-3 font-medium text-brand hover:bg-brand/5">ติดต่อร้านค้า</Link>
+            </div>
+            <p className="mt-5 text-sm text-ink/60">{d.products.length} รายการสินค้า{items.length > 0 && ` · เริ่มต้น ${baht(Math.min(...items.map((i) => i.price)))}`}</p>
+          </div>
+        </section>
+      ) : (
       <section className="relative isolate overflow-hidden bg-gradient-to-br from-brand to-[#0a4f43]">
         {d.t.banner_url && <img src={d.t.banner_url} alt="" className="absolute inset-0 -z-10 h-full w-full object-cover" />}
         <div className={`absolute inset-0 -z-10 ${d.t.banner_url ? "bg-gradient-to-r from-black/70 via-black/40 to-transparent" : ""}`} />
@@ -56,6 +71,7 @@ export default async function Shop({ params }: { params: { slug: string } }) {
           <p className="mt-6 text-sm text-white/70">{d.products.length} รายการสินค้า{items.length > 0 && ` · เริ่มต้น ${baht(Math.min(...items.map((i) => i.price)))}`}</p>
         </div>
       </section>
+      )}
       <section className="border-b border-ink/10 bg-white">
         <ul className="mx-auto grid max-w-6xl grid-cols-2 gap-x-4 gap-y-5 px-6 py-6 md:grid-cols-4">
           {TRUST.map(([i, t, x]) => <li key={t} className="flex gap-3"><span className="text-2xl" aria-hidden>{i}</span><div><p className="text-sm font-bold">{t}</p><p className="text-xs text-ink/60">{x}</p></div></li>)}
@@ -70,6 +86,9 @@ export default async function Shop({ params }: { params: { slug: string } }) {
           <section className="mt-16 grid gap-4 md:grid-cols-2">
             {d.pages.map((p) => <article key={p.id} className="card"><h2 className="text-lg font-bold">{p.title}</h2>{p.seo_description && <p className="mt-2 text-sm text-ink/70">{p.seo_description}</p>}</article>)}
           </section>
+        )}
+        {d.t.about && (
+          <section className="card mt-16"><h2 className="text-lg font-bold">เกี่ยวกับร้าน</h2><p className="mt-2 whitespace-pre-line text-sm text-ink/70">{d.t.about}</p></section>
         )}
         <section className="mt-16 grid gap-8 md:grid-cols-2">
           <div className="card">

@@ -25,24 +25,33 @@ async function addProduct(fd: FormData) {
 }
 async function toggle(fd: FormData) {
   "use server"
-  const { sb } = await getContext()
-  await sb.from("products").update({ status: String(fd.get("to")) === "active" ? "active" : "hidden" }).eq("id", String(fd.get("id")))
+  const { sb, tenant } = await getContext()
+  await sb.from("products").update({ status: String(fd.get("to")) === "active" ? "active" : "hidden" }).eq("id", String(fd.get("id"))).eq("tenant_id", tenant.id)
   revalidatePath("/app/products")
 }
 async function remove(fd: FormData) {
   "use server"
-  const { sb } = await getContext() // RLS กันการลบข้าม tenant
-  await sb.from("products").delete().eq("id", String(fd.get("id")))
+  const { sb, tenant } = await getContext() // กรอง tenant ซ้ำอีกชั้นนอกจาก RLS
+  await sb.from("products").delete().eq("id", String(fd.get("id"))).eq("tenant_id", tenant.id)
+  revalidatePath("/app/products")
+}
+async function loadStarter() {
+  "use server"
+  const { sb } = await getContext() // ฟังก์ชันในฐานข้อมูลใส่ให้เฉพาะร้านของผู้ล็อกอิน และเฉพาะเมื่อร้านยังไม่มีสินค้า
+  await sb.rpc("load_starter_products")
   revalidatePath("/app/products")
 }
 export const dynamic = "force-dynamic"
 export default async function Products() {
   const { sb, tenant } = await getContext()
-  const { data } = await sb.from("products").select("id,name,sku,price,compare_price,stock,category,status,image_url,images").order("created_at", { ascending: false })
+  const { data } = await sb.from("products").select("id,name,sku,price,compare_price,stock,category,status,image_url,images").eq("tenant_id", tenant.id).order("created_at", { ascending: false })
   return (
     <>
       <h1 className="text-2xl font-bold">สินค้า</h1>
       <p className="mt-1 text-sm text-ink/60">สินค้าที่เพิ่มที่นี่จะขึ้นที่หน้าร้านพร้อมตะกร้าและการชำระเงิน</p>
+      {data?.some((p: any) => String(p.sku ?? "").startsWith("SAMPLE-")) && (
+        <p className="mt-4 rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-900">ร้านของคุณมีสินค้าตัวอย่าง (รหัส SAMPLE-…) แก้ชื่อ ราคา รูป หรือลบทิ้งได้เลย เมื่อพร้อมขายของจริง</p>
+      )}
       <form action={addProduct} className="card mt-6 grid gap-3 md:grid-cols-2">
         <input name="name" required placeholder="ชื่อสินค้า" className="input md:col-span-2" />
         <input name="price" type="number" min="0" step="0.01" required placeholder="ราคาขาย (บาท)" className="input" />
@@ -56,7 +65,7 @@ export default async function Products() {
         <button className="btn justify-center md:col-span-2">เพิ่มสินค้า</button>
       </form>
       <ul className="mt-8 divide-y divide-ink/10">
-        {!data?.length && <li className="py-6 text-sm text-ink/60">ยังไม่มีสินค้า เพิ่มสินค้าแรกจากฟอร์มด้านบน</li>}
+        {!data?.length && <li className="py-6 text-sm text-ink/60">ยังไม่มีสินค้า เพิ่มสินค้าแรกจากฟอร์มด้านบน หรือ <form action={loadStarter} className="inline"><button className="text-brand underline">โหลดสินค้าตัวอย่าง</button></form></li>}
         {data?.map((p: any) => {
           const img = p.images?.[0] ?? p.image_url
           return (

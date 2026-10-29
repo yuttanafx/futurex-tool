@@ -12,7 +12,7 @@ async function save(fd: FormData) {
   const [banner] = await uploadImages(sb, 'shop-media', tenant.id, fd.getAll('banner'), 1)
   const pp = String(fd.get('promptpay_id') || '').replace(/\D/g, '')
   await sb.from('tenants').update({
-    name, tagline: txt(fd.get('tagline'), 200),
+    name, tagline: txt(fd.get('tagline'), 200), about: txt(fd.get('about'), 1000),
     ...(banner ? { banner_url: banner } : {}), ...(fd.get('remove_banner') ? { banner_url: null } : {}),
     shipping_fee: money(fd.get('shipping_fee')) ?? 0, free_shipping_over: money(fd.get('free_shipping_over')),
     promptpay_id: pp.length === 10 || pp.length === 13 ? pp : null,
@@ -30,8 +30,10 @@ export default async function Settings() {
       <form action={save} className="mt-6 max-w-2xl space-y-6">
         <section className="card space-y-3">
           <h2 className="font-bold">หน้าร้าน</h2>
+          <p className="text-xs text-ink/60">ข้อความ แบนเนอร์ และสินค้าเริ่มต้นเป็นตัวอย่าง แก้ไขหรือลบได้ตามต้องการ (สินค้าแก้ที่เมนู “สินค้า”)</p>
           <label className="block text-sm">ชื่อร้าน<input name="name" defaultValue={t?.name} required className="input mt-1" /></label>
           <label className="block text-sm">สโลแกน / คำแนะนำร้าน<input name="tagline" defaultValue={t?.tagline ?? ''} maxLength={200} className="input mt-1" /></label>
+          <label className="block text-sm">เกี่ยวกับร้าน (แสดงที่หน้าร้าน · ขึ้นบรรทัดใหม่ได้)<textarea name="about" rows={4} maxLength={1000} defaultValue={t?.about ?? ''} className="input mt-1" /></label>
           <div className="text-sm">แบนเนอร์หน้าร้าน (แนะนำภาพแนวนอน กว้างอย่างน้อย 1600px)
             {t?.banner_url && <div className="mt-2"><img src={t.banner_url} alt="" className="h-24 rounded-md object-cover" /><label className="mt-1 flex items-center gap-1 text-xs"><input type="checkbox" name="remove_banner" /> ลบแบนเนอร์</label></div>}
             <input name="banner" type="file" accept="image/jpeg,image/png,image/webp" className="input mt-2" /></div>

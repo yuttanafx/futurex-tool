@@ -29,8 +29,9 @@ async function save(fd: FormData) {
 }
 export default async function EditProduct({ params }: { params: { id: string } }) {
   if (!UUID.test(params.id)) notFound()
-  const { sb } = await getContext()
-  const { data: p } = await sb.from("products").select("*").eq("id", params.id).maybeSingle()
+  const { sb, tenant } = await getContext()
+  // สินค้า active ของทุกร้านอ่านได้สาธารณะ จึงต้องกรอง tenant เองเสมอ ไม่งั้นเปิดดูสินค้าร้านอื่นในหน้าแก้ไขได้
+  const { data: p } = await sb.from("products").select("*").eq("id", params.id).eq("tenant_id", tenant.id).maybeSingle()
   if (!p) notFound()
   const imgs: string[] = p.images ?? []
   return (

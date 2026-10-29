@@ -15,7 +15,7 @@ async function gen(fd: FormData) {
   const kind = String(fd.get('kind')), note = String(fd.get('note') || '').slice(0, 300)
   if (!(kind in KINDS)) return
   const pid = String(fd.get('product') || '')
-  const { data: p } = pid ? await sb.from('products').select('name,price').eq('id', pid).maybeSingle() : { data: null }
+  const { data: p } = pid ? await sb.from('products').select('name,price').eq('id', pid).eq('tenant_id', tenant.id).maybeSingle() : { data: null }
   const r = await generate(
     tenant.id,
     (ctx) => `คุณเป็นนักเขียนคอนเทนต์ขายของให้ร้าน "${ctx.shop}" เขียนภาษาไทย ใช้เฉพาะข้อมูลที่ให้ ห้ามแต่งราคา โปรโมชั่น หรือคุณสมบัติที่ไม่มีในข้อมูล งาน: ${KINDS[kind][1]}\nคำแนะนำจากร้าน: ${ctx.instructions || '(ไม่มี)'}\nสินค้าของร้าน: ${JSON.stringify(ctx.products)}`,
@@ -27,15 +27,15 @@ async function gen(fd: FormData) {
 }
 async function del(fd: FormData) {
   'use server'
-  const { sb } = await getContext()
-  await sb.from('content_items').delete().eq('id', String(fd.get('id')))
+  const { sb, tenant } = await getContext()
+  await sb.from('content_items').delete().eq('id', String(fd.get('id'))).eq('tenant_id', tenant.id)
   revalidatePath('/app/content')
 }
 export default async function Content({ searchParams }: { searchParams: { error?: string } }) {
-  const { sb } = await getContext()
+  const { sb, tenant } = await getContext()
   const [{ data: items }, { data: products }] = await Promise.all([
-    sb.from('content_items').select('id,kind,title,body').order('created_at', { ascending: false }).limit(50),
-    sb.from('products').select('id,name').eq('status', 'active'),
+    sb.from('content_items').select('id,kind,title,body').eq('tenant_id', tenant.id).order('created_at', { ascending: false }).limit(50),
+    sb.from('products').select('id,name').eq('tenant_id', tenant.id).eq('status', 'active'),
   ])
   return (
     <>

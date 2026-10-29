@@ -13,23 +13,24 @@ async function createPage(fd: FormData) {
 }
 async function toggle(fd: FormData) {
   'use server'
-  const { sb } = await getContext() // RLS กันการแก้ข้าม tenant
+  const { sb, tenant } = await getContext() // กรอง tenant ซ้ำอีกชั้นนอกจาก RLS
   const to = String(fd.get('to')) === 'published' ? 'published' : 'draft'
-  await sb.from('sales_pages').update({ status: to }).eq('id', String(fd.get('id')))
+  await sb.from('sales_pages').update({ status: to }).eq('id', String(fd.get('id'))).eq('tenant_id', tenant.id)
   revalidatePath('/app/pages')
 }
 async function saveSeo(fd: FormData) {
   'use server'
-  const { sb } = await getContext()
+  const { sb, tenant } = await getContext()
   await sb.from('sales_pages').update({
     seo_title: String(fd.get('seo_title') || '').slice(0, 70) || null,
     seo_description: String(fd.get('seo_description') || '').slice(0, 160) || null,
-  }).eq('id', String(fd.get('id')))
+  }).eq('id', String(fd.get('id'))).eq('tenant_id', tenant.id)
   revalidatePath('/app/pages')
 }
 export default async function Pages() {
-  const { sb } = await getContext()
-  const { data: pages } = await sb.from('sales_pages').select('id,title,status,seo_title,seo_description').order('created_at', { ascending: false })
+  const { sb, tenant } = await getContext()
+  // เพจที่เผยแพร่แล้วของทุกร้านอ่านได้สาธารณะ จึงต้องกรอง tenant เสมอ
+  const { data: pages } = await sb.from('sales_pages').select('id,title,status,seo_title,seo_description').eq('tenant_id', tenant.id).order('created_at', { ascending: false })
   return (
     <>
       <h1 className="text-2xl font-bold">เซลเพจ</h1>
