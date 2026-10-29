@@ -23,6 +23,24 @@ async function makeUser(tag, ref = null) {
 }
 try {
   const A = await makeUser('a'), B = await makeUser('b')
+  // --- ร้านใหม่มีหน้าร้าน + สินค้าตัวอย่าง และแยกรายร้าน (011) ---
+  const cnt = async (t) => (await admin.from('products').select('id', { count: 'exact', head: true }).eq('tenant_id', t).like('sku', 'SAMPLE-%')).count
+  check('ร้านใหม่ A มีสินค้าตัวอย่าง 7 รายการ', (await cnt(A.tenant)) === 7)
+  check('ร้านใหม่ B มีสินค้าตัวอย่าง 7 รายการ', (await cnt(B.tenant)) === 7)
+  const starterIds = new Set(((await admin.from('products').select('id').in('tenant_id', [A.tenant, B.tenant])).data ?? []).map((p) => p.id))
+  check('สินค้าตัวอย่างของ A และ B เป็นคนละแถวกัน (14 แถว)', starterIds.size === 14)
+  const ta = (await admin.from('tenants').select('tagline,about,banner_url').eq('id', A.tenant).single()).data
+  check('ร้านใหม่มีสโลแกน/เกี่ยวกับร้าน/แบนเนอร์เริ่มต้น', !!ta?.tagline && !!ta?.about && ta?.banner_url === '/starter/banner.jpg')
+  const sa = (await A.c.from('products').select('id').eq('tenant_id', A.tenant).eq('sku', 'SAMPLE-01').single()).data
+  await A.c.from('products').update({ name: 'A-edited', price: 999 }).eq('id', sa.id)
+  check('A แก้สินค้าตัวอย่างของตัวเองได้', (await admin.from('products').select('name').eq('id', sa.id).single()).data?.name === 'A-edited')
+  check('การแก้ของ A ไม่กระทบสินค้าตัวอย่างของ B', (await admin.from('products').select('name').eq('tenant_id', B.tenant).eq('sku', 'SAMPLE-01').single()).data?.name !== 'A-edited')
+  check('เรียก seed_starter_shop จากเบราว์เซอร์ไม่ได้ (anon และล็อกอิน)', denied(await anon.rpc('seed_starter_shop', { p_tenant: A.tenant, p_site: true })) && denied(await B.c.rpc('seed_starter_shop', { p_tenant: A.tenant, p_site: true })))
+  check('anon เรียก load_starter_products ไม่ได้', denied(await anon.rpc('load_starter_products')))
+  const again = await B.c.rpc('load_starter_products')
+  check('ร้านที่มีสินค้าแล้วกดโหลดสินค้าตัวอย่าง → ไม่เพิ่มซ้ำ', !again.error && again.data === 0, again.error?.message)
+  // หมายเหตุ: สินค้า active ของทุกร้านอ่านสาธารณะได้โดยออกแบบ (หน้าร้าน) ฝั่งแดชบอร์ดจึงต้องกรอง tenant เสมอ → ตรวจด้วย npm run check:tenant
+
   // --- เตรียมข้อมูลของ A ---
   const prod = (await A.c.from('products').insert({ tenant_id: A.tenant, name: 'A-active', price: 100 }).select('id').single()).data
   const hidden = (await A.c.from('products').insert({ tenant_id: A.tenant, name: 'A-hidden', price: 100, status: 'hidden' }).select('id').single()).data
