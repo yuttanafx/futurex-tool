@@ -8,7 +8,13 @@ const KINDS: Record<string, [string, string]> = {
   script: ['สคริปต์ไลฟ์', 'สคริปต์เปิดไลฟ์ แนะนำสินค้า และปิดการขาย'],
   seo: ['SEO', 'SEO title ไม่เกิน 60 ตัวอักษร และ meta description ไม่เกิน 155 ตัวอักษร'],
 }
-const ERR: Record<string, string> = { quota: 'โควตา AI วันนี้เต็มแล้ว', disabled: 'ผู้ช่วย AI ปิดอยู่ เปิดได้ที่หน้า AI' }
+const ERR: Record<string, string> = {
+  quota: 'โควตา AI วันนี้เต็มแล้ว (ใส่ API key ของร้านเองเพื่อไม่จำกัดตามโควตานี้)', disabled: 'ผู้ช่วย AI ปิดอยู่ เปิดได้ที่หน้า AI',
+  no_key: 'ยังไม่ได้ตั้ง API key ของ AI', not_configured: 'ระบบ AI ยังไม่ได้ตั้งค่าบนเซิร์ฟเวอร์',
+  bad_key: 'ผู้ให้บริการ AI ปฏิเสธ key ของคุณ (ไม่ถูกต้อง/หมดสิทธิ์)', bad_model: 'ไม่พบโมเดลที่ตั้งไว้ ตรวจชื่อโมเดลในหน้าตั้งค่า API',
+  provider_quota: 'ผู้ให้บริการ AI แจ้งว่าใช้เกินโควตา/เครดิตหมด ตรวจบัญชีของคุณ', timeout: 'เชื่อมต่อผู้ให้บริการ AI ไม่ได้ ลองใหม่อีกครั้ง',
+}
+const KEY_ERRS = ['no_key', 'bad_key', 'bad_model', 'provider_quota', 'quota']
 async function gen(fd: FormData) {
   'use server'
   const { sb, tenant } = await getContext()
@@ -41,7 +47,7 @@ export default async function Content({ searchParams }: { searchParams: { error?
     <>
       <h1 className="text-2xl font-bold">คลังคอนเทนต์</h1>
       <p className="mt-2 text-sm text-ink/70">AI เขียนจากข้อมูลสินค้าจริงของร้าน แต่ละครั้งนับเป็น 1 ข้อความในโควตา ควรอ่านทบทวนก่อนนำไปใช้</p>
-      {searchParams.error && <p role="alert" className="mt-4 rounded-md bg-sun/30 p-3 text-sm">{ERR[searchParams.error] ?? 'สร้างคอนเทนต์ไม่สำเร็จ ลองใหม่อีกครั้ง'}</p>}
+      {searchParams.error && <p role="alert" className="mt-4 rounded-md bg-sun/30 p-3 text-sm">{ERR[searchParams.error] ?? 'สร้างคอนเทนต์ไม่สำเร็จ ลองใหม่อีกครั้ง'}{KEY_ERRS.includes(searchParams.error) && <> <a href="/app/ai-keys" className="underline">ไปที่ตั้งค่า API ของ AI</a></>}</p>}
       <form action={gen} className="mt-6 grid gap-3 md:grid-cols-[1fr_1fr_2fr_auto]">
         <select name="kind" className="input">{Object.entries(KINDS).map(([k, [l]]) => <option key={k} value={k}>{l}</option>)}</select>
         <select name="product" className="input"><option value="">ทั้งร้าน</option>{products?.map((p) => <option key={p.id} value={p.id}>{p.name}</option>)}</select>

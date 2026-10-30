@@ -14,6 +14,7 @@ const NAV: [Tx, [string, Tx][]][] = [
     ['/app/orders', tx('คำสั่งซื้อ', 'Orders', '订单')], ['/app/customers', tx('ลูกค้า', 'Customers', '客户')]]],
   [tx('AI และสื่อสาร', 'AI & Communication', 'AI 与沟通'), [
     ['/app/inbox', tx('กล่องข้อความ', 'Inbox', '收件箱')], ['/app/ai', tx('ผู้ช่วย AI', 'AI assistant', 'AI 助手')],
+    ['/app/ai-keys', tx('ตั้งค่า API ของ AI', 'AI API keys', 'AI API 密钥')],
     ['/app/live', tx('ไลฟ์', 'Live', '直播')], ['/app/content', tx('คอนเทนต์', 'Content', '内容')],
     ['/app/adcontent', tx('ยิงแอด คอนเทนต์', 'Ad Content', '广告内容')],
     ['/app/mbo', tx('ล็อกอินสมาชิก FutureX', 'FutureX Member Login', 'FutureX 会员登录')]]],

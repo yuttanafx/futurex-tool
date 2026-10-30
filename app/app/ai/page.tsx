@@ -12,6 +12,9 @@ export default function AI() {
           <T th="ผู้ช่วย AI" en="AI assistant" zh="AI 助手" />
         </h1>
         <div className="flex flex-wrap gap-2">
+          <Link href="/app/ai-keys" className="btn-ghost">
+            <T th="ตั้งค่า API ของ AI" en="AI API keys" zh="AI API 密钥" />
+          </Link>
           <Link href="/app/ai/settings" className="btn-ghost">
             <T th="ตั้งค่าผู้ช่วยบนหน้าร้าน" en="Storefront assistant settings" zh="店铺助手设置" />
           </Link>

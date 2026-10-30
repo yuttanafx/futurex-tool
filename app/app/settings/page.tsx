@@ -1,6 +1,10 @@
 import { revalidatePath } from 'next/cache'
 import { getContext } from '@/lib/tenant'
+import Link from 'next/link'
 import { uploadImages } from '@/lib/upload'
+import { admin } from '@/lib/supabase/admin'
+import { PROVIDERS, type Provider } from '@/lib/aikeys'
+import { T } from '@/components/Prefs'
 export const dynamic = 'force-dynamic'
 const money = (v: FormDataEntryValue | null) => { const s = String(v ?? '').trim(); if (!s) return null; const n = Number(s); return Number.isFinite(n) && n >= 0 ? n : null }
 const txt = (v: FormDataEntryValue | null, n: number) => String(v ?? '').trim().slice(0, n) || null
@@ -24,6 +28,7 @@ async function save(fd: FormData) {
 export default async function Settings() {
   const { sb, tenant, user, role } = await getContext()
   const { data: t } = await sb.from('tenants').select('*').eq('id', tenant.id).single()
+  const { data: aiKeys } = await admin().from('tenant_ai_keys').select('provider').eq('tenant_id', tenant.id)
   return (
     <>
       <h1 className="text-2xl font-bold">ตั้งค่าร้าน</h1>
@@ -58,6 +63,12 @@ export default async function Settings() {
         </section>
         <button className="btn">บันทึก</button>
       </form>
+      <section className="card mt-4 max-w-2xl space-y-2 text-sm">
+        <h2 className="font-bold"><T th="API ของ AI (Claude / GPT / Gemini)" en="AI API keys (Claude / GPT / Gemini)" zh="AI API 密钥（Claude / GPT / Gemini）" /></h2>
+        <p className="text-xs text-ink/60"><T th="ใส่ key ของร้านคุณเอง ใช้กับคลังคอนเทนต์ ผู้ช่วยตอบแชท และผู้ช่วยไลฟ์ ของร้านนี้เท่านั้น แต่ละร้านแยกกัน" en="Add your shop's own key. It is used only for this shop's content library, chat assistant and live assistant. Each shop is separate." zh="填入本店自己的密钥，仅用于本店的内容库、聊天助手和直播助手。各店互相独立。" /></p>
+        <p>{aiKeys?.length ? <span className="text-brand">✓ {aiKeys.map((k) => PROVIDERS[k.provider as Provider]?.label ?? k.provider).join(', ')}</span> : <span className="text-ink/60"><T th="ยังไม่ได้ตั้ง API key" en="No API key set yet" zh="尚未设置 API 密钥" /></span>}</p>
+        <Link href="/app/ai-keys" className="btn-ghost"><T th="ตั้งค่า API ของ AI" en="Set up AI API keys" zh="设置 AI API 密钥" /></Link>
+      </section>
       <dl className="card mt-4 max-w-2xl space-y-2 text-sm">
         <div><dt className="text-ink/60">ลิงก์หน้าร้าน</dt><dd>/s/{tenant.slug}</dd></div>
         <div><dt className="text-ink/60">บัญชีที่ล็อกอิน</dt><dd>{user.email} ({role})</dd></div>
