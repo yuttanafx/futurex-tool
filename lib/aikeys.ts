@@ -26,7 +26,7 @@ export function encryptKey(plain: string): string {
   const ct = Buffer.concat([c.update(plain, 'utf8'), c.final()])
   return [iv, c.getAuthTag(), ct].map((b) => b.toString('base64')).join('.')
 }
-function decryptKey(blob: string): string {
+export function decryptKey(blob: string): string {
   const k = secret()
   if (!k) throw new Error('AI_KEY_SECRET not set')
   const [iv, tag, ct] = blob.split('.').map((p) => Buffer.from(p, 'base64'))

@@ -20,7 +20,7 @@ export default async function ShopLayout({ children, params }: { children: React
           <div><p className="font-medium">เมนู</p><ul className="mt-2 space-y-1 text-ink/70"><li><Link href={base} className="hover:text-brand">หน้าร้าน</Link></li><li><Link href={`${base}#products`} className="hover:text-brand">สินค้าทั้งหมด</Link></li><li><Link href={`${base}/contact`} className="hover:text-brand">ติดต่อผู้ขาย</Link></li></ul></div>
           <div><p className="font-medium">ช้อปอย่างมั่นใจ</p><ul className="mt-2 space-y-1 text-ink/70"><li>สั่งซื้อได้โดยไม่ต้องสมัครสมาชิก</li><li>ชำระผ่านพร้อมเพย์ โอนบัญชี หรือเก็บเงินปลายทาง (ตามที่ร้านเปิด)</li><li>ติดตามออเดอร์ได้จากลิงก์ที่ได้รับหลังสั่งซื้อ</li></ul></div>
         </div>
-        <p className="border-t border-ink/10 py-4 text-center text-xs text-ink/40">ขับเคลื่อนโดย AI FutureX Tool</p>
+        <p className="border-t border-ink/10 py-4 text-center text-xs text-ink/40">© {new Date().getFullYear()} TERRAVOLTECO · ขับเคลื่อนโดย AI FutureX Tool</p>
       </footer>
     </CartProvider>
   )

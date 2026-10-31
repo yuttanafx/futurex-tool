@@ -6,7 +6,7 @@ import type { Tx } from '@/lib/i18n'
 const ICON: Record<string, string> = {
   '/app/dashboard': '📊', '/app/products': '🛍️', '/app/pages': '📄', '/app/orders': '🧾', '/app/customers': '👥',
   '/app/inbox': '💬', '/app/ai': '🤖', '/app/ai-keys': '🗝️', '/app/live': '🎥', '/app/content': '✍️', '/app/adcontent': '🎯', '/app/mbo': '🔑',
-  '/app/nfc': '📡', '/app/referrals': '🔗', '/app/integrations': '🔌', '/app/settings': '⚙️',
+  '/app/nfc': '📡', '/app/referrals': '🔗', '/app/billing': '💳', '/app/integrations': '🔌', '/app/settings': '⚙️',
 }
 export default function AppNav({ groups }: { groups: [Tx, [string, Tx][]][] }) {
   const path = usePathname()

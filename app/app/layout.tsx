@@ -4,6 +4,8 @@ import { signOut } from '@/app/login/actions'
 import { getContext } from '@/lib/tenant'
 import MarketingBackground from '@/components/MarketingBackground'
 import { Controls, T } from '@/components/Prefs'
+import Copyright from '@/components/Copyright'
+import BillingBanner from '@/components/BillingBanner'
 import type { Tx } from '@/lib/i18n'
 export const dynamic = 'force-dynamic'
 const tx = (th: string, en: string, zh: string): Tx => ({ th, en, zh })
@@ -20,11 +22,12 @@ const NAV: [Tx, [string, Tx][]][] = [
     ['/app/mbo', tx('ล็อกอินสมาชิก FutureX', 'FutureX Member Login', 'FutureX 会员登录')]]],
   [tx('เครื่องมือ', 'Tools', '工具'), [
     ['/app/nfc', tx('NFC', 'NFC', 'NFC')], ['/app/referrals', tx('ลิงก์แนะนำ', 'Referrals', '推荐链接')],
+    ['/app/billing', tx('ค่าบริการ & วอลเล็ต', 'Billing & Wallet', '费用与钱包')],
     ['/app/integrations', tx('ช่องทาง', 'Channels', '渠道')], ['/app/settings', tx('ตั้งค่า', 'Settings', '设置')]]],
 ]
 export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
   const { tenant, user, sb } = await getContext()
-  const { data: isAdmin } = await sb.rpc('is_platform_admin')
+  const [{ data: isAdmin }, { data: tp }] = await Promise.all([sb.rpc('is_platform_admin'), sb.from('tenants').select('plan_id').eq('id', tenant.id).maybeSingle()])
   return (
     <div className="dk"><MarketingBackground /><div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 md:flex-row">
       <aside className="md:w-56 md:shrink-0">
@@ -43,7 +46,8 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
           </form>
         </div>
       </aside>
-      <div className="min-w-0 flex-1">{children}</div>
+      <div className="min-w-0 flex-1"><BillingBanner sb={sb} tenantId={tenant.id} plan={tp?.plan_id ?? 'free'} />{children}
+        <Copyright className="mt-12 border-t border-ink/10 pt-4 text-center text-xs text-ink/50" /></div>
     </div></div>
   )
 }

@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { signIn, signUp } from './actions'
 import MarketingBackground from '@/components/MarketingBackground'
 import { Controls, T } from '@/components/Prefs'
+import Copyright from '@/components/Copyright'
 export default function Login({ searchParams }: { searchParams: { mode?: string; error?: string } }) {
   const reg = searchParams.mode === 'register'
   const title = reg ? <T th="สมัครสมาชิก" en="Sign up" zh="注册" /> : <T th="เข้าสู่ระบบ" en="Log in" zh="登录" />
@@ -24,6 +25,7 @@ export default function Login({ searchParams }: { searchParams: { mode?: string;
             : <><T th="ยังไม่มีบัญชี?" en="No account yet?" zh="还没有账号？" /> <Link className="underline" href="/login?mode=register"><T th="สมัครสมาชิก" en="Sign up" zh="注册" /></Link></>}
         </p>
       </main>
+      <Copyright className="pb-8 text-center text-xs text-ink/50" />
     </div>
   )
 }

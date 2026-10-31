@@ -2,6 +2,7 @@ import Link from 'next/link'
 import MarketingBackground from '@/components/MarketingBackground'
 import { Controls } from '@/components/Prefs'
 import { ConsentSettingsButton } from '@/components/PdpaConsent'
+import Copyright from '@/components/Copyright'
 
 export const metadata = { title: 'นโยบายความเป็นส่วนตัว | AI FutureX Tool' }
 
@@ -101,6 +102,7 @@ export default function Privacy() {
         <H>11. ติดต่อเรา</H>
         <p className="mt-2">{CONTROLLER} · {ADDRESS} · {EMAIL}</p>
       </main>
+      <Copyright className="pb-8 text-center text-xs text-ink/50" />
     </div>
   )
 }

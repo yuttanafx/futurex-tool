@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { Controls, T } from '@/components/Prefs'
 import { ConsentSettingsButton } from '@/components/PdpaConsent'
+import Copyright from '@/components/Copyright'
 export function SiteHeader() {
   return (
     <header className="border-b border-white/10 bg-white">
@@ -21,7 +22,7 @@ export function SiteHeader() {
 export function SiteFooter() {
   return (
     <footer className="mt-24 border-t border-ink/10 bg-white py-8 text-center text-sm text-ink/60">
-      © AI FutureX Tool · <T
+      <Copyright /> AI FutureX Tool · <T
         th="หนึ่งแพลตฟอร์ม หลายร้านค้า ข้อมูลแต่ละร้านแยกกันอย่างปลอดภัย"
         en="One platform, many shops. Each shop's data stays securely separated."
         zh="一个平台，多家店铺，各店数据安全隔离" />
