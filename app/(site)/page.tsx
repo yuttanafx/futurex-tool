@@ -1,6 +1,9 @@
+import Image from 'next/image'
 import Link from 'next/link'
 import { T } from '@/components/Prefs'
 import type { Tx } from '@/lib/i18n'
+// ลิงก์ดาวน์โหลดแอปมือถือ Android (Google Drive)
+const APP_DOWNLOAD_URL = 'https://drive.google.com/file/d/1NrWF8ZolvoXuS_3SoGjDsQnKhG6sA7qc/view?usp=sharing'
 const F: [Tx, Tx][] = [
   [
     { th: 'เซลเพจและสินค้า', en: 'Sales pages & products', zh: '销售页与商品' },
@@ -51,6 +54,16 @@ export default function Home() {
         <ol className="mt-4 list-decimal space-y-2 pl-5 text-white/80">
           {STEPS.map((s, i) => <li key={i}><T {...s} /></li>)}
         </ol>
+      </section>
+      <section id="app-download" className="mt-16 panel rounded-xl p-8 text-center">
+        <p className="text-sm font-medium text-brand">ANDROID</p>
+        <h2 className="mt-2 text-xl font-bold"><T th="ติดตั้งแอปมือถือ" en="Install the mobile app" zh="安装手机应用" /></h2>
+        <a href={APP_DOWNLOAD_URL} target="_blank" rel="noopener noreferrer"
+          className="mx-auto mt-6 block w-fit rounded-3xl border border-white/15 p-2 transition-transform duration-200 hover:scale-105 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand">
+          <Image src="/images/futurex-app-logo.png" alt="FutureX Tool Ai" width={256} height={256} className="h-40 w-40 rounded-[20px] sm:h-44 sm:w-44" />
+          <span className="sr-only"><T th="ติดตั้งแอปมือถือ — ดาวน์โหลดสำหรับ Android" en="Install the mobile app — download for Android" zh="安装手机应用 — 下载 Android 版" /></span>
+        </a>
+        <p className="mt-4 text-sm text-white/70"><T th="กดที่โลโก้เพื่อดาวน์โหลดแอปสำหรับ Android" en="Tap the logo to download the Android app" zh="点击标志下载 Android 应用" /></p>
       </section>
     </main>
   )
