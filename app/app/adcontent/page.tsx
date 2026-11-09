@@ -1,6 +1,6 @@
 import { T } from '@/components/Prefs'
 
-const SRC = (process.env.NEXT_PUBLIC_ADPILOT_URL || 'https://ai-adpilot-seven.vercel.app') + '/login#queue'
+const SRC = (process.env.NEXT_PUBLIC_ADPILOT_URL || 'https://ai-adpilot-4v38.vercel.app/login'
 
 export default function AdContent() {
   return (
