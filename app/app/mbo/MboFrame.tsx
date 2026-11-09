@@ -4,7 +4,7 @@ import { T } from '@/components/Prefs'
 
 // ค่าเริ่มต้นฝังหน้าล็อกอินจริงในแดชบอร์ด · ถ้ากรอบว่าง (เว็บไม่อนุญาตให้ฝัง) กด “กลับไปแบบรูป + ลิงก์”
 export default function MboFrame({ src }: { src: string }) {
-  const [frame, setFrame] = useState(true)
+  const [frame, setFrame] = useState(false)
   return frame ? (
     <>
       <button type="button" onClick={() => setFrame(false)} className="btn-ghost mt-4">
