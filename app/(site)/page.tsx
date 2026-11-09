@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { T } from '@/components/Prefs'
 import type { Tx } from '@/lib/i18n'
 // ลิงก์ดาวน์โหลดแอปมือถือ Android (Google Drive)
-const APP_DOWNLOAD_URL = 'https://drive.google.com/file/d/1NrWF8ZolvoXuS_3SoGjDsQnKhG6sA7qc/view?usp=sharing'
+const APP_DOWNLOAD_URL = 'https://drive.google.com/file/d/1NrWF8ZolvoXuS_3SoGjDsQnKhG6sA7qc/view?usp=sharing' 
 const F: [Tx, Tx][] = [
   [
     { th: 'เซลเพจและสินค้า', en: 'Sales pages & products', zh: '销售页与商品' },
