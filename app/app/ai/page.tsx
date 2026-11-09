@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { T } from '@/components/Prefs'
 import AiFrame from './AiFrame'
 
-const SRC = process.env.NEXT_PUBLIC_AI_PLATFORM_URL || 'https://ai-platform-mlm.vercel.app/'
+const SRC = process.env.NEXT_PUBLIC_AI_PLATFORM_URL || 'https://skills-hub-ebon.vercel.app/'
 
 export default function AI() {
   return (
