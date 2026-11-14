@@ -3,7 +3,7 @@ import { signIn, signUp } from './actions'
 import MarketingBackground from '@/components/MarketingBackground'
 import { Controls, T } from '@/components/Prefs'
 import Copyright from '@/components/Copyright'
-export default function Login({ searchParams }: { searchParams: { mode?: string; error?: string } }) {
+export default function Login({ searchParams }: { searchParams: { mode?: string; error?: string; ok?: string } }) {
   const reg = searchParams.mode === 'register'
   const title = reg ? <T th="สมัครสมาชิก" en="Sign up" zh="注册" /> : <T th="เข้าสู่ระบบ" en="Log in" zh="登录" />
   return (
@@ -12,10 +12,12 @@ export default function Login({ searchParams }: { searchParams: { mode?: string;
       <main className="mx-auto max-w-sm px-6 py-14">
         <h1 className="text-2xl font-bold">{title}</h1>
         {searchParams.error && <p role="alert" className="mt-4 rounded-md bg-sun/30 p-3 text-sm">{searchParams.error}</p>}
+        {searchParams.ok && <p role="status" className="mt-4 rounded-md bg-brand/20 p-3 text-sm">{searchParams.ok}</p>}
         <form action={reg ? signUp : signIn} className="mt-6 space-y-4">
           {reg && <label className="block text-sm"><T th="ชื่อร้าน" en="Shop name" zh="店铺名称" /><input name="shop" required className="input mt-1" /></label>}
           <label className="block text-sm"><T th="อีเมล" en="Email" zh="邮箱" /><input name="email" type="email" required className="input mt-1" /></label>
-          <label className="block text-sm"><T th="รหัสผ่าน" en="Password" zh="密码" /><input name="password" type="password" minLength={8} required className="input mt-1" /></label>
+          <label className="block text-sm"><T th="รหัสผ่าน" en="Password" zh="密码" /><input name="password" type="password" minLength={8} required autoComplete={reg ? 'new-password' : 'current-password'} className="input mt-1" /></label>
+          {!reg && <p className="-mt-2 text-right text-xs"><Link href="/forgot" className="underline"><T th="ลืมรหัสผ่าน?" en="Forgot password?" zh="忘记密码？" /></Link></p>}
           {reg && <label className="flex items-start gap-2 text-xs"><input type="checkbox" name="pdpa" required className="mt-0.5" /><span><T th="ฉันได้อ่านและยอมรับ" en="I have read and accept the" zh="我已阅读并接受" /> <Link href="/privacy" target="_blank" className="underline"><T th="นโยบายความเป็นส่วนตัว (PDPA)" en="Privacy Policy (PDPA)" zh="隐私政策（PDPA）" /></Link></span></label>}
           <button className="btn w-full justify-center">{title}</button>
         </form>
