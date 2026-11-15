@@ -8,6 +8,11 @@ export async function getContext() {
   const sb = createClient()
   const { data: { user } } = await sb.auth.getUser()
   if (!user) redirect('/login')
+  // แอดมินที่กดปุ่ม "เข้าจัดการร้านนี้" จะได้บริบทของร้านนั้นแทน (สถานะเก็บในฐานข้อมูล ตรวจสิทธิ์ฝั่งเซิร์ฟเวอร์)
+  const { data: imp } = await sb.rpc('admin_impersonated_tenant')
+  if (imp && (imp as any).id) {
+    return { sb, user, tenant: imp as { id: string; name: string; slug: string }, role: 'owner', impersonating: true }
+  }
   let { data: m, error: e1 } = await sb.from('tenant_members').select(SEL).eq('user_id', user.id).limit(1).maybeSingle()
   if (e1) console.error('tenant_members select failed:', e1.message)
   if (!m) {
@@ -37,5 +42,5 @@ export async function getContext() {
     console.error('tenant lookup empty after create_tenant', { user: user.id })
     redirect('/login?error=' + encodeURIComponent('โหลดข้อมูลร้านไม่สำเร็จ (ตรวจ migration/RLS ของตาราง tenants และ tenant_members)'))
   }
-  return { sb, user, tenant, role: (m as any).role as string }
+  return { sb, user, tenant, role: (m as any).role as string, impersonating: false }
 }
