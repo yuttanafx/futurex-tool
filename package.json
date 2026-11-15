@@ -3,10 +3,12 @@
  "private": true,
  "scripts": {
   "dev": "next dev",
+  "prebuild": "node scripts/cleanup-old.mjs --yes",
   "build": "next build",
   "start": "next start",
   "test:rls": "node --env-file=.env.local scripts/rls-test.mjs",
-  "check:tenant": "node scripts/check-tenant-filters.mjs"
+  "check:tenant": "node scripts/check-tenant-filters.mjs",
+  "cleanup": "node scripts/cleanup-old.mjs"
  },
  "dependencies": {
   "next": "14.2.15",
