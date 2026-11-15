@@ -2,6 +2,7 @@ import Link from "next/link"
 import { notFound } from "next/navigation"
 import { createClient } from "@/lib/supabase/server"
 import { revalidatePath } from "next/cache"
+import { startManage } from "../actions"
 import { baht } from "@/lib/fmt"
 import { dt, dtm, fmtAmount, INVOICE_STATUS, type Method } from "@/lib/billing"
 export const dynamic = "force-dynamic"
@@ -47,6 +48,11 @@ export default async function ShopDetail({ params }: { params: { id: string } })
       <h1 className="mt-2 text-2xl font-bold">{s.name} {s.status !== "active" && <span className="ml-2 rounded-full bg-red-600 px-2 py-0.5 align-middle text-xs text-white">ถูกระงับ</span>}</h1>
       <p className="text-sm text-ink/60">เจ้าของ {s.owner_email ?? "-"} · แพ็กเกจ {s.plan_id} · /s/{s.slug} · ช่องทางรับเงิน: {[s.promptpay && "พร้อมเพย์", s.bank && "ธนาคาร", s.cod && "ปลายทาง"].filter(Boolean).join(", ") || "ยังไม่ตั้งค่า"}</p>
       {s.status === "active" && <Link href={`/s/${encodeURIComponent(s.slug)}`} target="_blank" className="mt-1 inline-block text-sm text-brand underline">เปิดหน้าร้าน</Link>}
+      <form action={startManage} className="mt-3">
+        <input type="hidden" name="id" value={params.id} />
+        <button className="btn">🛠️ เข้าจัดการร้านนี้ (ตั้งค่า API / สินค้า)</button>
+        <span className="ml-2 text-xs text-ink/60">ไม่ต้องใช้รหัสผ่านสมาชิก ระบบบันทึกประวัติการเข้า</span>
+      </form>
       <dl className="mt-6 grid grid-cols-2 gap-4 md:grid-cols-3 [&>div]:card">{K.map(([k, v]) => <div key={k}><dt className="text-sm text-ink/60">{k}</dt><dd className="text-2xl font-bold">{v}</dd></div>)}</dl>
       <section className="card mt-6">
         <h2 className="font-bold">ค่าบริการ · วอลเล็ต · PV</h2>

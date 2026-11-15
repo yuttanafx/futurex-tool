@@ -7,6 +7,7 @@ import { Controls, T } from '@/components/Prefs'
 import Copyright from '@/components/Copyright'
 import BillingBanner from '@/components/BillingBanner'
 import type { Tx } from '@/lib/i18n'
+import { stopManage } from '@/app/admin/shops/actions'
 export const dynamic = 'force-dynamic'
 const tx = (th: string, en: string, zh: string): Tx => ({ th, en, zh })
 const NAV: [Tx, [string, Tx][]][] = [
@@ -19,18 +20,24 @@ const NAV: [Tx, [string, Tx][]][] = [
     ['/app/ai-keys', tx('ตั้งค่า API ของ AI', 'AI API keys', 'AI API 密钥')],
     ['/app/live', tx('ไลฟ์', 'Live', '直播')], ['/app/content', tx('คอนเทนต์', 'Content', '内容')],
     ['/app/adcontent', tx('ยิงแอด คอนเทนต์', 'Ad Content', '广告内容')],
-    ['/app/mbo', tx('ล็อกอินสมาชิก FutureX', 'FutureX Member Login', 'FutureX 会员登录')],
-    ['/app/tiktok', tx('TikTok App', 'TikTok App', 'TikTok App')]]],
+    ['/app/tiktok', tx('ปักตะกร้า TikTok', 'TikTok Basket', 'TikTok 购物车')],
+    ['/app/mbo', tx('ล็อกอินสมาชิก FutureX', 'FutureX Member Login', 'FutureX 会员登录')]]],
   [tx('เครื่องมือ', 'Tools', '工具'), [
     ['/app/nfc', tx('NFC', 'NFC', 'NFC')], ['/app/referrals', tx('ลิงก์แนะนำ', 'Referrals', '推荐链接')],
     ['/app/billing', tx('ค่าบริการ & วอลเล็ต', 'Billing & Wallet', '费用与钱包')],
     ['/app/integrations', tx('ช่องทาง', 'Channels', '渠道')], ['/app/settings', tx('ตั้งค่า', 'Settings', '设置')]]],
 ]
 export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
-  const { tenant, user, sb } = await getContext()
+  const { tenant, user, sb, impersonating } = await getContext()
   const [{ data: isAdmin }, { data: tp }] = await Promise.all([sb.rpc('is_platform_admin'), sb.from('tenants').select('plan_id').eq('id', tenant.id).maybeSingle()])
   return (
-    <div className="dk"><MarketingBackground /><div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 md:flex-row">
+    <div className="dk"><MarketingBackground />
+      {impersonating && (
+        <div className="sticky top-0 z-50 flex flex-wrap items-center justify-center gap-3 bg-yellow-400 px-4 py-2 text-sm font-medium text-black">
+          <span><T th={`กำลังจัดการร้าน “${tenant.name}” แทนสมาชิก (แอดมิน)`} en={`Managing “${tenant.name}” on behalf of the member (admin)`} zh={`正在代会员管理「${tenant.name}」（管理员）`} /></span>
+          <form action={stopManage}><button className="rounded bg-black px-3 py-1 text-white"><T th="ออกจากร้านนี้" en="Exit this shop" zh="退出此店铺" /></button></form>
+        </div>
+      )}<div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-8 md:flex-row">
       <aside className="md:w-56 md:shrink-0">
         <Controls className="mb-4 flex-wrap" />
         <div className="card">

@@ -148,6 +148,10 @@ export default function TemplateManager({ items, canSend = false }) {
             <input id="f-source" name="source_url" type="url" maxLength={500}
               defaultValue={editing?.source_url ?? ""} placeholder="https://" />
           </label>
+          <label htmlFor="f-tiktok">ลิงก์ตะกร้า / สินค้า TikTok Shop (ถ้ามี)
+            <input id="f-tiktok" name="tiktok_url" type="url" maxLength={500}
+              defaultValue={editing?.tiktok_url ?? ""} placeholder="https://vt.tiktok.com/... หรือ https://shop.tiktok.com/..." />
+          </label>
           <div className="row">
             <button className="btn primary" type="submit">
               {editing ? "บันทึกการแก้ไข" : "บันทึกสินค้า"}
@@ -215,6 +219,18 @@ export default function TemplateManager({ items, canSend = false }) {
               >
                 {copiedId === it.id ? "คัดลอกแล้ว" : "คัดลอกทั้งหมด"}
               </button>
+              {it.tiktok_url ? (
+                <div className="row">
+                  <button className="btn sm" onClick={() => copy(it.tiktok_url, "ลิงก์ตะกร้า TikTok", it.id)}>
+                    คัดลอกลิงก์ตะกร้า TikTok
+                  </button>
+                  <a className="btn sm ghost" href={it.tiktok_url} target="_blank" rel="noopener noreferrer">
+                    เปิดลิงก์ตะกร้า ↗
+                  </a>
+                </div>
+              ) : (
+                <p className="note">ยังไม่ใส่ลิงก์ตะกร้า TikTok กดแก้ไขเพื่อเพิ่ม</p>
+              )}
               {canSend && (
                 <button className="btn wide" onClick={() => send(it.id)}>ส่งไป TikTok</button>
               )}

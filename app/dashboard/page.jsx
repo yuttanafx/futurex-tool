@@ -10,7 +10,7 @@ export default async function DashboardPage() {
   const user = await requireUser();
   const canSend = getPublisher().id !== "manual";
   const items = await many(
-    "SELECT id, name, price, caption, tags, details, fda_no, source_url FROM templates WHERE user_id = $1 ORDER BY updated_at DESC, id DESC",
+    "SELECT id, name, price, caption, tags, details, fda_no, source_url, tiktok_url FROM templates WHERE user_id = $1 ORDER BY updated_at DESC, id DESC",
     [user.id]
   );
 

@@ -2,6 +2,7 @@ import Link from "next/link"
 import { revalidatePath } from "next/cache"
 import { createClient } from "@/lib/supabase/server"
 import { baht } from "@/lib/fmt"
+import { startManage } from "./shops/actions"
 export const dynamic = "force-dynamic"
 const PLANS = ["free", "starter", "pro", "business"]
 async function update(fd: FormData) {
@@ -54,7 +55,7 @@ export default async function Admin({ searchParams }: { searchParams: { q?: stri
               {!list.length && <tr><td colSpan={9} className="px-3 py-8 text-center text-ink/60">ยังไม่มีร้านค้า</td></tr>}
               {list.map((s) => (
                 <tr key={s.id} className={s.status !== "active" ? "opacity-60" : ""}>
-                  <td className="px-3 py-3"><Link href={`/admin/shops/${s.id}`} className="font-medium text-brand underline">{s.name}</Link><div className="text-xs text-ink/50">/s/{s.slug}</div></td>
+                  <td className="px-3 py-3"><Link href={`/admin/shops/${s.id}`} className="font-medium text-brand underline">{s.name}</Link><div className="text-xs text-ink/50">/s/{s.slug}</div><form action={startManage} className="mt-1"><input type="hidden" name="id" value={s.id} /><button className="text-xs text-brand underline">🛠️ เข้าจัดการร้านนี้</button></form></td>
                   <td className="px-3 py-3">{s.owner_email ?? "-"}</td>
                   <td className="px-3 py-3">{dt(s.created_at)}</td>
                   <td className="px-3 py-3">{s.products}</td>

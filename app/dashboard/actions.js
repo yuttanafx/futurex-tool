@@ -19,20 +19,22 @@ export async function saveTemplate(formData) {
   const fda = clean(formData.get("fda_no"), 40);
   let source = clean(formData.get("source_url"), 500);
   if (!/^https?:\/\//i.test(source)) source = ""; // รับเฉพาะลิงก์ http/https
+  let tiktokUrl = clean(formData.get("tiktok_url"), 500);
+  if (!/^https?:\/\//i.test(tiktokUrl)) tiktokUrl = ""; // ลิงก์ตะกร้า/สินค้า TikTok Shop
   if (!name) return;
 
   if (id) {
     await run(
-      `UPDATE templates SET name = $1, price = $2, caption = $3, tags = $4, details = $5, fda_no = $6, source_url = $7,
+      `UPDATE templates SET name = $1, price = $2, caption = $3, tags = $4, details = $5, fda_no = $6, source_url = $7, tiktok_url = $8,
          updated_at = now()
-       WHERE id = $8 AND user_id = $9`,
-      [name, price, caption, tags, details, fda, source, id, user.id]
+       WHERE id = $9 AND user_id = $10`,
+      [name, price, caption, tags, details, fda, source, tiktokUrl, id, user.id]
     );
   } else {
     await run(
-      `INSERT INTO templates (user_id, name, price, caption, tags, details, fda_no, source_url)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)`,
-      [user.id, name, price, caption, tags, details, fda, source]
+      `INSERT INTO templates (user_id, name, price, caption, tags, details, fda_no, source_url, tiktok_url)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`,
+      [user.id, name, price, caption, tags, details, fda, source, tiktokUrl]
     );
   }
   revalidatePath("/dashboard");
