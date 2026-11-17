@@ -2,6 +2,9 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { T } from '@/components/Prefs'
 import type { Tx } from '@/lib/i18n'
+import VideoEmbed from '@/components/VideoEmbed'
+import FeatureGuide from '@/components/FeatureGuide'
+import { GUIDE, TUTORIAL_VIDEO_URL } from '@/lib/guide'
 // ลิงก์ดาวน์โหลดแอปมือถือ Android (Google Drive)
 const APP_DOWNLOAD_URL = 'https://drive.google.com/file/d/1NrWF8ZolvoXuS_3SoGjDsQnKhG6sA7qc/view?usp=sharing' 
 const F: [Tx, Tx][] = [
@@ -54,6 +57,17 @@ export default function Home() {
         <ol className="mt-4 list-decimal space-y-2 pl-5 text-white/80">
           {STEPS.map((s, i) => <li key={i}><T {...s} /></li>)}
         </ol>
+      </section>
+      <section id="tutorial" className="mt-16">
+        <p className="text-sm font-medium text-brand">VIDEO</p>
+        <h2 className="mt-2 text-xl font-bold"><T th="วิดีโอแนะนำการใช้งาน" en="How it works: video guide" zh="使用教程视频" /></h2>
+        <div className="mx-auto mt-6 max-w-3xl"><VideoEmbed url={TUTORIAL_VIDEO_URL} title="AI FutureX Tool" /></div>
+      </section>
+      <section id="feature-guide" className="mt-16">
+        <p className="text-sm font-medium text-brand">FEATURES</p>
+        <h2 className="mt-2 text-xl font-bold"><T th="ปุ่ม 16 ปุ่มหลังล็อกอิน ทำอะไรได้บ้าง" en="The 16 buttons inside your workspace" zh="登录后的 16 个功能按钮" /></h2>
+        <p className="mt-2 max-w-2xl text-sm text-ink/70"><T th="กดปุ่มแต่ละอันเพื่อเปิดหน้าต่างดูว่ามีประโยชน์อย่างไรและใช้งานอย่างไร" en="Tap any menu button to see how it helps and how to use it." zh="点击任一菜单按钮，查看它的作用和用法。" /></p>
+        <div className="mt-6"><FeatureGuide items={GUIDE} mode="public" /></div>
       </section>
       <section id="app-download" className="mt-16 panel rounded-xl p-8 text-center">
         <p className="text-sm font-medium text-brand">ANDROID</p>

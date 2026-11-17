@@ -72,3 +72,22 @@ html[data-ui-theme='day'] .navbtn.logout:hover { background: #fff; border-color:
 
 /* หน้าไลฟ์: ขยายความกว้างให้มีที่ว่างฝั่งขวาสำหรับกรอบ HeyGen (เฉพาะหน้าที่มี .live-wide) */
 @media (min-width: 1280px) { .dk > div:has(.live-wide) { max-width: 1600px; } }
+
+/* ปุ่มฟีเจอร์แบบกดเลือก (FeatureGuide) ใช้สไตล์เดียวกับเมนูที่เลือกอยู่ */
+.navbtn[aria-pressed='true'] { color: #fff; border-color: transparent; background: linear-gradient(135deg, #2F5BFF, #22B8A0); box-shadow: 0 8px 22px -8px rgb(47 91 255 / .85); }
+.navbtn[aria-pressed='true'] .ico { background: rgb(255 255 255 / .22); }
+html[data-ui-theme='day'] .navbtn[aria-pressed='true'] { border-color: transparent; background: linear-gradient(135deg, #2F5BFF, #22B8A0); }
+button.navbtn { cursor: pointer; }
+
+/* ปุ่มฟีเจอร์ (FeatureGuide): ไอคอน + ชื่อ + ประโยชน์สั้นๆ */
+.fbtn { display: flex; align-items: center; gap: .65rem; width: 100%; padding: .55rem .8rem; border-radius: .85rem; text-align: left; cursor: pointer; color: rgb(var(--ink));
+  border: 1px solid rgb(255 255 255 / .14); background: rgb(255 255 255 / .05); backdrop-filter: blur(6px); transition: transform .2s, background-color .2s, border-color .2s, box-shadow .2s; }
+.fbtn .ico { flex: none; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: .6rem; font-size: 1rem; background: rgb(255 255 255 / .1); }
+.fbtn:hover { transform: translateY(-2px); border-color: rgb(124 162 255 / .7); background: rgb(76 125 255 / .16); box-shadow: 0 8px 20px -10px rgb(76 125 255 / .7); }
+.fbtn:focus-visible { outline: 2px solid #7CA2FF; outline-offset: 2px; }
+html[data-ui-theme='day'] .fbtn { border-color: rgb(18 48 61 / .14); background: rgb(255 255 255 / .75); }
+html[data-ui-theme='day'] .fbtn .ico { background: rgb(47 91 255 / .1); }
+html[data-ui-theme='day'] .fbtn:hover { background: #fff; border-color: #2F5BFF; }
+@keyframes fg-pop { from { opacity: 0; transform: translateY(12px) scale(.96); } to { opacity: 1; transform: none; } }
+.fg-pop { animation: fg-pop .22s ease-out; }
+@media (prefers-reduced-motion: reduce) { .fbtn { transition: none; } .fbtn:hover { transform: none; } .fg-pop { animation: none; } }
