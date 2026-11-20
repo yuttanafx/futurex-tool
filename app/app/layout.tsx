@@ -21,6 +21,7 @@ const NAV: [Tx, [string, Tx][]][] = [
     ['/app/live', tx('ไลฟ์', 'Live', '直播')], ['/app/content', tx('คอนเทนต์', 'Content', '内容')],
     ['/app/adcontent', tx('ยิงแอด คอนเทนต์', 'Ad Content', '广告内容')],
     ['/app/tiktok', tx('ปักตะกร้า TikTok', 'TikTok Basket', 'TikTok 购物车')],
+    ['/app/clips', tx('รวมคลิปตั้งเวลาโพส', 'Clips & Scheduled Posts', '视频合集·定时发布')],
     ['/app/mbo', tx('ล็อกอินสมาชิก FutureX', 'FutureX Member Login', 'FutureX 会员登录')]]],
   [tx('เครื่องมือ', 'Tools', '工具'), [
     ['/app/nfc', tx('NFC', 'NFC', 'NFC')], ['/app/referrals', tx('ลิงก์แนะนำ', 'Referrals', '推荐链接')],

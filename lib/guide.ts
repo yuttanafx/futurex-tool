@@ -129,6 +129,16 @@ export const GUIDE: GuideItem[] = [
     ],
   },
   {
+    href: '/app/clips', icon: '🗓️', title: t('รวมคลิปตั้งเวลาโพส', 'Clips & Scheduled Posts', '视频合集·定时发布'),
+    benefit: t('รวมคลิปไว้ที่เดียว แล้วตั้งวันเวลาให้โพสล่วงหน้า ไม่ต้องคอยนั่งโพสเองทีละคลิป ลงคลิปสม่ำเสมอโดยใช้เวลาน้อยลง', 'Keep your clips in one place and schedule them to post at the date and time you choose, so you stay consistent without posting by hand.', '把视频集中在一处，并预设发布日期和时间，无需逐条手动发布，保持稳定更新。'),
+    steps: [
+      t('เปิดหน้านี้ (หรือกด “เปิดในแท็บใหม่” ถ้ากรอบไม่แสดง)', 'Open this page (or press “Open in new tab” if the frame is blank).', '打开此页面（若框内不显示，点击“在新标签页打开”）。'),
+      t('ล็อกอิน แล้วเพิ่มคลิปที่ต้องการเข้าไปรวมไว้', 'Sign in, then add the clips you want to keep together.', '登录后添加要集中管理的视频。'),
+      t('เลือกคลิปและตั้งวัน-เวลาที่จะโพส', 'Pick a clip and set the date and time to post.', '选择视频并设置发布日期和时间。'),
+      t('กลับมาตรวจสถานะรายการที่ตั้งเวลาไว้ได้ที่หน้านี้', 'Come back here to check your scheduled items.', '回到此页查看已设定定时的内容。'),
+    ],
+  },
+  {
     href: '/app/mbo', icon: '🔑', title: t('ล็อกอินสมาชิก FutureX', 'FutureX Member Login', 'FutureX 会员登录'),
     benefit: t('เข้าระบบสมาชิก FutureX ได้จากในแดชบอร์ดนี้ ไม่ต้องสลับไปมาหลายเว็บ', 'Reach the FutureX member system from inside this dashboard, no tab juggling.', '在本后台内直接进入 FutureX 会员系统，无需来回切换网站。'),
     steps: [
@@ -185,12 +195,12 @@ export const GUIDE: GuideItem[] = [
 ]
 
 /**
- * กลุ่มปุ่มที่โชว์บนหน้าเว็บ (16 ปุ่ม) เรียงเหมือนเมนูด้านข้างของระบบ
+ * กลุ่มปุ่มที่โชว์บนหน้าเว็บ (17 ปุ่ม) เรียงเหมือนเมนูด้านข้างของระบบ
  * อยากเพิ่ม/ลดปุ่ม: เพิ่มหรือลบ href ในลิสต์นี้ (ข้อมูลของ /app/dashboard และ /app/ai-keys ยังอยู่ใน GUIDE ไม่ได้ถูกลบ)
  */
 export const GROUPS: { title: Tx; hrefs: string[] }[] = [
   { title: t('ขาย', 'Sales', '销售'), hrefs: ['/app/products', '/app/pages', '/app/orders', '/app/customers'] },
-  { title: t('AI และสื่อสาร', 'AI & Communication', 'AI 与沟通'), hrefs: ['/app/inbox', '/app/ai', '/app/live', '/app/content', '/app/adcontent', '/app/tiktok', '/app/mbo'] },
+  { title: t('AI และสื่อสาร', 'AI & Communication', 'AI 与沟通'), hrefs: ['/app/inbox', '/app/ai', '/app/live', '/app/content', '/app/adcontent', '/app/tiktok', '/app/clips', '/app/mbo'] },
   { title: t('เครื่องมือ', 'Tools', '工具'), hrefs: ['/app/nfc', '/app/referrals', '/app/billing', '/app/integrations', '/app/settings'] },
 ]
 
@@ -206,6 +216,7 @@ export const TAGLINES: Record<string, Tx> = {
   '/app/content': t('AI เขียนโพสต์และแคปชัน', 'AI writes posts and captions', 'AI 撰写帖子和文案'),
   '/app/adcontent': t('ทำคอนเทนต์สำหรับยิงแอด', 'Ad content maker', '制作广告内容'),
   '/app/tiktok': t('จัดการเทมเพลตตะกร้า TikTok', 'TikTok basket templates', 'TikTok 购物车模板'),
+  '/app/clips': t('รวมคลิป ตั้งเวลาโพสล่วงหน้า', 'Keep clips, schedule posts', '集中视频、定时发布'),
   '/app/mbo': t('เข้าระบบสมาชิก FutureX', 'FutureX member login', '进入 FutureX 会员系统'),
   '/app/nfc': t('นามบัตร NFC แตะแล้วเปิดร้าน', 'Tap an NFC card, open your shop', 'NFC 名片一碰开店'),
   '/app/referrals': t('ลิงก์แนะนำ นับผลงานอัตโนมัติ', 'Referral links, auto tracking', '推荐链接自动统计'),

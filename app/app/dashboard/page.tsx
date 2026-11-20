@@ -37,7 +37,7 @@ export default async function Dashboard() {
       <section id="guide" className="mt-10">
         <h2 className="text-lg font-bold"><T th="เริ่มต้นใช้งาน" en="Getting started" zh="快速上手" /></h2>
         <div className="mt-4 max-w-3xl"><VideoEmbed url={TUTORIAL_VIDEO_URL} title="AI FutureX Tool" /></div>
-        <h3 className="mt-8 font-bold"><T th="ปุ่มทั้ง 16 ปุ่มในระบบ ใช้ทำอะไรได้บ้าง" en="What the 16 buttons do" zh="16 个按钮的用途" /></h3>
+        <h3 className="mt-8 font-bold"><T th="ปุ่มทั้ง 17 ปุ่มในระบบ ใช้ทำอะไรได้บ้าง" en="What the 17 buttons do" zh="17 个按钮的用途" /></h3>
         <div className="mt-3"><FeatureGuide items={GUIDE} mode="app" /></div>
       </section>
     </>

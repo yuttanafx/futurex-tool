@@ -65,7 +65,7 @@ export default function Home() {
       </section>
       <section id="feature-guide" className="mt-16">
         <p className="text-sm font-medium text-brand">FEATURES</p>
-        <h2 className="mt-2 text-xl font-bold"><T th="ปุ่ม 16 ปุ่มหลังล็อกอิน ทำอะไรได้บ้าง" en="The 16 buttons inside your workspace" zh="登录后的 16 个功能按钮" /></h2>
+        <h2 className="mt-2 text-xl font-bold"><T th="ปุ่ม 17 ปุ่มหลังล็อกอิน ทำอะไรได้บ้าง" en="The 17 buttons inside your workspace" zh="登录后的 17 个功能按钮" /></h2>
         <p className="mt-2 max-w-2xl text-sm text-ink/70"><T th="กดปุ่มแต่ละอันเพื่อเปิดหน้าต่างดูว่ามีประโยชน์อย่างไรและใช้งานอย่างไร" en="Tap any menu button to see how it helps and how to use it." zh="点击任一菜单按钮，查看它的作用和用法。" /></p>
         <div className="mt-6"><FeatureGuide items={GUIDE} mode="public" /></div>
       </section>

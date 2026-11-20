@@ -11,7 +11,7 @@ import { GROUPS, TAGLINES, type GuideItem } from '@/lib/guide'
  * mode="public": ใช้บนหน้าแรก (ก่อนล็อกอิน) ปุ่มท้ายหน้าต่างชวนสมัครสมาชิก
  * mode="app": ใช้ในแดชบอร์ด ปุ่มท้ายหน้าต่างพาไปหน้าฟีเจอร์จริง
  */
-export default function FeatureGuide({ items, mode }: { items: GuideItem[]; mode: 'public' | 'app' }) {
+export default function FeatureGuide({ items, mode, only }: { items: GuideItem[]; mode: 'public' | 'app'; only?: string }) {
   const { lang } = usePrefs()
   const [sel, setSel] = useState<string | null>(null)
   const cur = items.find((i) => i.href === sel) ?? null
@@ -34,6 +34,21 @@ export default function FeatureGuide({ items, mode }: { items: GuideItem[]; mode
 
   return (
     <div>
+      {only ? (
+        (() => {
+          const it = items.find((i) => i.href === only)
+          if (!it) return null
+          return (
+            <button type="button" className="fbtn" aria-haspopup="dialog" onClick={(e) => open(it.href, e.currentTarget)}>
+              <span className="ico" aria-hidden>{it.icon}</span>
+              <span className="min-w-0">
+                <span className="block truncate text-sm font-medium"><T {...it.title} /></span>
+                {TAGLINES[it.href] && <span className="block truncate text-xs text-ink/60"><T {...TAGLINES[it.href]} /></span>}
+              </span>
+            </button>
+          )
+        })()
+      ) : (
       <div className="space-y-6">
         {GROUPS.map((g, gi) => {
           const list = g.hrefs.map((h) => items.find((i) => i.href === h)).filter((i): i is GuideItem => !!i)
@@ -56,6 +71,7 @@ export default function FeatureGuide({ items, mode }: { items: GuideItem[]; mode
           )
         })}
       </div>
+      )}
       {cur && createPortal(
         <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/60 p-4 sm:items-center" onClick={close} role="presentation">
           <div role="dialog" aria-modal="true" aria-labelledby="fg-title" onClick={(e) => e.stopPropagation()}
@@ -73,7 +89,7 @@ export default function FeatureGuide({ items, mode }: { items: GuideItem[]; mode
             </ol>
             {cur.videoUrl && <div className="mt-4"><VideoEmbed url={cur.videoUrl} title={cur.title[lang]} /></div>}
             <div className="mt-6 flex flex-wrap gap-3">
-              {mode === 'app' ? (
+              {only ? null : mode === 'app' ? (
                 <Link href={cur.href} className="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-[#1D3FBF] hover:brightness-95"><T th="ไปที่หน้านี้ →" en="Open this page →" zh="前往此页面 →" /></Link>
               ) : (
                 <Link href="/register" className="inline-flex items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-[#1D3FBF] hover:brightness-95"><T th="สมัครฟรีเพื่อใช้งานจริง" en="Sign up free to use it" zh="免费注册开始使用" /></Link>
