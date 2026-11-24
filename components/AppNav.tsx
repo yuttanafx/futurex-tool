@@ -4,8 +4,8 @@ import { usePathname } from 'next/navigation'
 import { T } from '@/components/Prefs'
 import type { Tx } from '@/lib/i18n'
 const ICON: Record<string, string> = {
-  '/app/dashboard': '📊', '/app/products': '🛍️', '/app/pages': '📄', '/app/orders': '🧾', '/app/customers': '👥',
-  '/app/inbox': '💬', '/app/ai': '🤖', '/app/ai-keys': '🗝️', '/app/live': '🎥', '/app/content': '✍️', '/app/adcontent': '🎯', '/app/mbo': '🔑', '/app/tiktok': '🎵', '/app/clips': '🗓️',
+  '/app/dashboard': '📊', '/app/manual': '📖', '/app/products': '🛍️', '/app/pages': '📄', '/app/orders': '🧾', '/app/customers': '👥',
+  '/app/inbox': '💬', '/app/ai': '🤖', '/app/ai-keys': '🗝️', '/app/live': '🎥', '/app/content': '✍️', '/app/adcontent': '🎯', '/app/mbo': '🔑', '/app/tiktok': '🎵',
   '/app/nfc': '📡', '/app/referrals': '🔗', '/app/billing': '💳', '/app/integrations': '🔌', '/app/settings': '⚙️',
 }
 export default function AppNav({ groups }: { groups: [Tx, [string, Tx][]][] }) {
