@@ -11,7 +11,7 @@ import { stopManage } from '@/app/admin/shops/actions'
 export const dynamic = 'force-dynamic'
 const tx = (th: string, en: string, zh: string): Tx => ({ th, en, zh })
 const NAV: [Tx, [string, Tx][]][] = [
-  [tx('ภาพรวม', 'Overview', '概览'), [['/app/dashboard', tx('แดชบอร์ด', 'Dashboard', '仪表盘')]]],
+  [tx('ภาพรวม', 'Overview', '概览'), [['/app/dashboard', tx('แดชบอร์ด', 'Dashboard', '仪表盘')], ['/app/manual', tx('คู่มือการใช้งาน', 'User guide', '使用手册')]]],
   [tx('ขาย', 'Sales', '销售'), [
     ['/app/products', tx('สินค้า', 'Products', '商品')], ['/app/pages', tx('เซลเพจ', 'Sales pages', '销售页')],
     ['/app/orders', tx('คำสั่งซื้อ', 'Orders', '订单')], ['/app/customers', tx('ลูกค้า', 'Customers', '客户')]]],
@@ -21,7 +21,6 @@ const NAV: [Tx, [string, Tx][]][] = [
     ['/app/live', tx('ไลฟ์', 'Live', '直播')], ['/app/content', tx('คอนเทนต์', 'Content', '内容')],
     ['/app/adcontent', tx('ยิงแอด คอนเทนต์', 'Ad Content', '广告内容')],
     ['/app/tiktok', tx('ปักตะกร้า TikTok', 'TikTok Basket', 'TikTok 购物车')],
-    ['/app/clips', tx('รวมคลิปตั้งเวลาโพส', 'Clips & Scheduled Posts', '视频合集·定时发布')],
     ['/app/mbo', tx('ล็อกอินสมาชิก FutureX', 'FutureX Member Login', 'FutureX 会员登录')]]],
   [tx('เครื่องมือ', 'Tools', '工具'), [
     ['/app/nfc', tx('NFC', 'NFC', 'NFC')], ['/app/referrals', tx('ลิงก์แนะนำ', 'Referrals', '推荐链接')],

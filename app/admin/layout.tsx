@@ -17,7 +17,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
       <div className="mx-auto max-w-6xl px-6 py-8">
         <header className="flex flex-wrap items-center gap-3">
           <Link href="/admin" className="text-lg font-bold">AI FutureX Tool <span className="ml-2 rounded-full bg-brand px-2 py-0.5 text-xs font-medium text-white">ADMIN</span></Link>
-          <nav className="flex gap-2 text-sm"><Link href="/admin" className="btn-ghost py-1">ภาพรวม</Link><Link href="/admin/billing" className="btn-ghost py-1">💳 ค่าบริการ</Link></nav>
+          <nav className="flex gap-2 text-sm"><Link href="/admin" className="btn-ghost py-1">ภาพรวม</Link><Link href="/admin/billing" className="btn-ghost py-1">💳 ค่าบริการ</Link><Link href="/admin/manual" className="btn-ghost py-1">📖 คู่มือ</Link></nav>
           <div className="ml-auto flex flex-wrap items-center gap-3"><Controls />
             <Link href="/app/dashboard" className="btn-ghost">ไปร้านของฉัน</Link>
             <form action={signOut}><button className="btn-ghost">ออกจากระบบ</button></form></div>
